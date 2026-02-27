@@ -679,6 +679,8 @@
 
   // Form submit
   document.getElementById('surveyForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
     const required = [
       {name:'entry.805243968', id:'card-q1'},
       {name:'entry.2072922670', id:'card-q2'},
@@ -698,7 +700,7 @@
     let allOk = true;
 
     required.forEach(field => {
-      const checked = document.querySelector(`[name="${field.name}"]:checked`);
+      const checked = document.querySelector('[name="' + field.name + '"]:checked');
       const card = document.getElementById(field.id);
       if(!checked) {
         allOk = false;
@@ -708,22 +710,51 @@
     });
 
     if(!allOk) {
-      e.preventDefault();
       if(firstError) firstError.scrollIntoView({behavior:'smooth', block:'center'});
       return;
     }
 
-    // Show success after short delay
+    // Build form data
+    const formData = new FormData();
+
+    const allFields = [
+      'entry.805243968','entry.2072922670','entry.2070589925',
+      'entry.1917994696','entry.910675579','entry.1781753645',
+      'entry.1583423131','entry.1969240336','entry.936808312',
+      'entry.531022889','entry.1805522137','entry.1395655609',
+      'entry.14536501','entry.1023786532'
+    ];
+
+    allFields.forEach(name => {
+      const checked = document.querySelector('[name="' + name + '"]:checked');
+      if(checked) formData.append(name, checked.value);
+    });
+
+    // Handle checkboxes Q5
+    const checkboxes = document.querySelectorAll('[name="entry.633160335"]:checked');
+    checkboxes.forEach(cb => formData.append('entry.633160335', cb.value));
+
+    // Show submitting state
     const btn = document.getElementById('submitBtn');
     btn.disabled = true;
     btn.textContent = 'Submitting...';
 
-    setTimeout(() => {
+    // Submit using fetch with no-cors
+    fetch('https://docs.google.com/forms/d/e/1FAIpQLSepWl0cZfHOXkx9F_hZ7gv_YSXQ1kM2rgw0y01AYwhtoZgRew/formResponse', {
+      method: 'POST',
+      mode: 'no-cors',
+      body: formData
+    }).then(() => {
       document.getElementById('formWrap').style.display = 'none';
       document.getElementById('successScreen').classList.add('show');
       document.getElementById('progressBar').style.width = '100%';
       window.scrollTo({top: 0, behavior: 'smooth'});
-    }, 1200);
+    }).catch(() => {
+      document.getElementById('formWrap').style.display = 'none';
+      document.getElementById('successScreen').classList.add('show');
+      document.getElementById('progressBar').style.width = '100%';
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    });
   });
 </script>
 </body>
