@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI & Big Data in Consumer Behaviour – Survey</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f1c2e;
+    --navy-mid: #1a2e46;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --cream: #f8f4ee;
+    --cream-dark: #ede8df;
+    --text: #1a1a2e;
+    --muted: #6b7080;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  .hero {
+    background: var(--navy);
+    padding: 48px 24px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,0.15), transparent 70%);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; right: -40px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,0.1), transparent 70%);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(201,168,76,0.18);
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--gold-light);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 4vw, 32px);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.3;
+    max-width: 680px;
+    margin: 0 auto 16px;
+  }
+  .hero h1 span { color: var(--gold-light); }
+  .hero p {
+    color: rgba(255,255,255,0.65);
+    font-size: 14px;
+    max-width: 520px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+  .hero-meta {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+  .hero-meta span {
+    color: rgba(255,255,255,0.5);
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .hero-meta span::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .progress-wrap { background: var(--navy-mid); height: 3px; }
+  .progress-bar {
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  .form-wrap {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 40px 0 4px;
+  }
+  .section-number {
+    width: 32px; height: 32px;
+    background: var(--navy);
+    color: var(--gold-light);
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    margin-bottom: 20px;
+    opacity: 0.4;
+  }
+
+  .q-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 1px solid var(--cream-dark);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .q-card:hover {
+    border-color: rgba(201,168,76,0.35);
+    box-shadow: 0 4px 20px rgba(15,28,46,0.06);
+  }
+  .q-card.active {
+    border-color: var(--gold);
+    box-shadow: 0 4px 24px rgba(201,168,76,0.12);
+  }
+  .q-card.error { border-color: #e74c3c !important; }
+
+  .q-number {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--gold);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .q-text {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+  .q-text .required { color: #c0392b; margin-left: 2px; }
+
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1.5px solid var(--cream-dark);
+    cursor: pointer;
+    transition: all 0.18s;
+    font-size: 14px;
+    color: var(--text);
+    user-select: none;
+  }
+  .option:hover {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.05);
+  }
+  .option input[type="radio"],
+  .option input[type="checkbox"] {
+    accent-color: var(--gold);
+    width: 16px; height: 16px;
+    flex-shrink: 0;
+  }
+  .option.selected {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.08);
+    color: var(--navy);
+    font-weight: 500;
+  }
+
+  /* Likert */
+  .likert-wrap { overflow-x: auto; }
+  .likert-scale {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .likert-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .likert-options {
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+  }
+  .likert-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 4px;
+    border-radius: 8px;
+    border: 1.5px solid var(--cream-dark);
+    cursor: pointer;
+    transition: all 0.18s;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    background: var(--white);
+  }
+  .likert-btn:hover {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.05);
+    color: var(--navy);
+  }
+  .likert-btn.selected {
+    border-color: var(--gold);
+    background: var(--navy);
+    color: var(--gold-light);
+    font-weight: 600;
+  }
+  .likert-btn input { display: none; }
+  .likert-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  .skip-notice {
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    background: rgba(107,112,128,0.07);
+    border-radius: 6px;
+    border-left: 3px solid var(--muted);
+  }
+
+  .submit-wrap { margin-top: 40px; text-align: center; }
+  .submit-btn {
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 16px 48px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+  }
+  .submit-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  }
+  .submit-btn:hover {
+    background: var(--navy-mid);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(15,28,46,0.2);
+  }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .submit-note { font-size: 12px; color: var(--muted); margin-top: 12px; }
+
+  .success-screen {
+    display: none;
+    max-width: 700px;
+    margin: 60px auto;
+    padding: 0 16px;
+    text-align: center;
+  }
+  .success-screen.show { display: block; }
+  .success-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 48px 32px;
+    border: 1px solid rgba(201,168,76,0.3);
+    box-shadow: 0 8px 32px rgba(15,28,46,0.08);
+  }
+  .success-icon {
+    width: 64px; height: 64px;
+    background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    font-size: 26px;
+  }
+  .success-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    color: var(--navy);
+    margin-bottom: 12px;
+  }
+  .success-card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+  .gold-line {
+    width: 48px; height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    margin: 20px auto;
+    border-radius: 2px;
+  }
+
+  @media (max-width: 480px) {
+    .hero { padding: 36px 16px 32px; }
+    .q-card { padding: 18px; }
+    .likert-btn { padding: 8px 2px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">Academic Research Survey</div>
+  <h1>AI & Big Data in <span>Consumer Behaviour</span> & Digital Marketing</h1>
+  <p>All responses are strictly confidential and will be used for academic research purposes only.</p>
+  <div class="hero-meta">
+    <span>Takes 3–5 minutes</span>
+    <span>15 Questions</span>
+    <span>Anonymous & Confidential</span>
+  </div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<!-- Success Screen -->
+<div class="success-screen" id="successScreen">
+  <div class="success-card">
+    <div class="success-icon">✓</div>
+    <h2>Thank You!</h2>
+    <div class="gold-line"></div>
+    <p>Your response has been successfully recorded.<br>This data will contribute to an academic research project on AI and Digital Marketing in India.</p>
+  </div>
+</div>
+
+<!-- Survey Form -->
+<div class="form-wrap" id="formWrap">
+
+  <!-- Hidden iframe for form submission -->
+  <form id="surveyForm" novalidate>
+
+    <!-- SECTION A -->
+    <div class="section-label">
+      <div class="section-number">A</div>
+      <div class="section-title">Basic Demographics</div>
+    </div>
+    <div class="section-divider"></div>
+
+    <!-- Q1 -->
+    <div class="q-card" id="card-q1">
+      <div class="q-number">Question 01</div>
+      <div class="q-text">What is your age group? <span class="required">*</span></div>
+      <div class="options">
+        <label class="option"><input type="radio" name="entry.805243968" value="18-24"> 18 – 24</label>
+        <label class="option"><input type="radio" name="entry.805243968" value="25-34"> 25 – 34</label>
+        <label class="option"><input type="radio" name="entry.805243968" value="35-44"> 35 – 44</label>
+        <label class="option"><input type="radio" name="entry.805243968" value="45+"> 45 and above</label>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card" id="card-q2">
+      <div class="q-number">Question 02</div>
+      <div class="q-text">What is your occupation? <span class="required">*</span></div>
+      <div class="options">
+        <label class="option"><input type="radio" name="entry.2072922670" value="Student"> Student</label>
+        <label class="option"><input type="radio" name="entry.2072922670" value="Marketing/Sales Professional"> Marketing / Sales Professional</label>
+        <label class="option"><input type="radio" name="entry.2072922670" value="IT Professional"> IT Professional</label>
+        <label class="option"><input type="radio" name="entry.2072922670" value="Business Owner"> Business Owner</label>
+        <label class="option"><input type="radio" name="entry.2072922670" value="Other"> Other</label>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card" id="card-q3">
+      <div class="q-number">Question 03</div>
+      <div class="q-text">Which city tier do you live in? <span class="required">*</span></div>
+      <div class="options">
+        <label class="option"><input type="radio" name="entry.2070589925" value="Tier I"> Tier I <span style="color:var(--muted);font-size:12px">(Mumbai, Delhi, Bangalore, Chennai)</span></label>
+        <label class="option"><input type="radio" name="entry.2070589925" value="Tier II"> Tier II <span style="color:var(--muted);font-size:12px">(Pune, Jaipur, Lucknow, Guwahati)</span></label>
+        <label class="option"><input type="radio" name="entry.2070589925" value="Tier III"> Tier III <span style="color:var(--muted);font-size:12px">(Smaller cities and towns)</span></label>
+      </div>
+    </div>
+
+    <!-- SECTION B -->
+    <div class="section-label">
+      <div class="section-number">B</div>
+      <div class="section-title">Online Shopping Behaviour</div>
+    </div>
+    <div class="section-divider"></div>
+
+    <!-- Q4 -->
+    <div class="q-card" id="card-q4">
+      <div class="q-number">Question 04</div>
+      <div class="q-text">How frequently do you shop online? <span class="required">*</span></div>
+      <div class="options">
+        <label class="option"><input type="radio" name="entry.1917994696" value="Daily"> Daily</label>
+        <label class="option"><input type="radio" name="entry.1917994696" value="Weekly"> Weekly</label>
+        <label class="option"><input type="radio" name="entry.1917994696" value="Monthly"> Monthly</label>
+        <label class="option"><input type="radio" name="entry.1917994696" value="Rarely"> Rarely</label>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-card" id="card-q5">
+      <div class="q-number">Question 05</div>
+      <div class="q-text">Which platforms do you use most often? <span style="color:var(--muted);font-size:13px">(Select all that apply)</span></div>
+      <div class="options">
+        <label class="option"><input type="checkbox" name="entry.633160335" value="Amazon/Flipkart"> Amazon / Flipkart</label>
+        <label class="option"><input type="checkbox" name="entry.633160335" value="Zomato/Swiggy"> Zomato / Swiggy</label>
+        <label class="option"><input type="checkbox" name="entry.633160335" value="Myntra"> Myntra</label>
+        <label class="option"><input type="checkbox" name="entry.633160335" value="Paytm"> Paytm</label>
+        <label class="option"><input type="checkbox" name="entry.633160335" value="Other"> Other</label>
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="q-card" id="card-q6">
+      <div class="q-number">Question 06</div>
+      <div class="q-text">Have you noticed product recommendations personalized based on your past behaviour? <span class="required">*</span></div>
+      <div class="options">
+        <label class="option"><input type="radio" name="entry.910675579" value="Yes, Always"> Yes, always</label>
+        <label class="option"><input type="radio" name="entry.910675579" value="Yes, Sometimes"> Yes, sometimes</label>
+        <label class="option"><input type="radio" name="entry.910675579" value="Rarely"> Rarely</label>
+        <label class="option"><input type="radio" name="entry.910675579" value="Never"> No, never</label>
+      </div>
+    </div>
+
+    <!-- SECTION C -->
+    <div class="section-label">
+      <div class="section-number">C</div>
+      <div class="section-title">AI Impact on Decisions</div>
+    </div>
+    <div class="section-divider"></div>
+
+    <!-- Q7 Likert -->
+    <div class="q-card" id="card-q7">
+      <div class="q-number">Question 07</div>
+      <div class="q-text">Personalized recommendations influence my purchase decisions. <span class="required">*</span></div>
+      <div class="likert-options" id="likert-q7">
+        <label class="likert-btn" onclick="selectLikert('q7','1',this)"><input type="radio" name="entry.1781753645" value="1">1</label>
+        <label class="likert-btn" onclick="selectLikert('q7','2',this)"><input type="radio" name="entry.1781753645" value="2">2</label>
+        <label class="likert-btn" onclick="selectLikert('q7','3',this)"><input type="radio" name="entry.1781753645" value="3">3</label>
+        <label class="likert-btn" onclick="selectLikert('q7','4',this)"><input type="radio" name="entry.1781753645" value="4">4</label>
+        <label class="likert-btn" onclick="selectLikert('q7','5',this)"><input type="radio" name="entry.1781753645" value="5">5</label>
+      </div>
+      <div class="likert-footer"><span>Strongly Disagree</span><span>Strongly Agree</span></div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="q-card" id="card-q8">
+      <div class="q-number">Question 08</div>
+      <div class="q-text">I have purchased a product specifically because of an AI-driven recommendation. <span class="required">*</span></div>
+      <div class="options">
+        <label class="option"><input type="radio" name="entry.1583423131" value="Yes"> Yes</label>
+        <label class="option"><input type="radio" name="entry.1583423131" value="No"> No</label>
+        <label class="option"><input type="radio" name="entry.1583423131" value="Not Sure"> Not sure</label>
+      </div>
+    </div>
+
+    <!-- Q9 Likert -->
+    <div class="q-card" id="card-q9">
+      <div class="q-number">Question 09</div>
+      <div class="q-text">I find AI chatbots helpful for resolving customer queries. <span class="required">*</span></div>
+      <div class="likert-options" id="likert-q9">
+        <label class="likert-btn" onclick="selectLikert('q9','1',this)"><input type="radio" name="entry.1969240336" value="1">1</label>
+        <label class="likert-btn" onclick="selectLikert('q9','2',this)"><input type="radio" name="entry.1969240336" value="2">2</label>
+        <label class="likert-btn" onclick="selectLikert('q9','3',this)"><input type="radio" name="entry.1969240336" value="3">3</label>
+        <label class="likert-btn" onclick="selectLikert('q9','4',this)"><input type="radio" name="entry.1969240336" value="4">4</label>
+        <label class="likert-btn" onclick="selectLikert('q9','5',this)"><input type="radio" name="entry.1969240336" value="5">5</label>
+      </div>
+      <div class="likert-footer"><span>Strongly Disagree</span><span>Strongly Agree</span></div>
+    </div>
+
+    <!-- Q10 Likert -->
+    <div class="q-card" id="card-q10">
+      <div class="q-number">Question 10</div>
+      <div class="q-text">AI-driven personalization improves my overall online shopping experience. <span class="required">*</span></div>
+      <div class="likert-options" id="likert-q10">
+        <label class="likert-btn" onclick="selectLikert('q10','1',this)"><input type="radio" name="entry.936808312" value="1">1</label>
+        <label class="likert-btn" onclick="selectLikert('q10','2',this)"><input type="radio" name="entry.936808312" value="2">2</label>
+        <label class="likert-btn" onclick="selectLikert('q10','3',this)"><input type="radio" name="entry.936808312" value="3">3</label>
+        <label class="likert-btn" onclick="selectLikert('q10','4',this)"><input type="radio" name="entry.936808312" value="4">4</label>
+        <label class="likert-btn" onclick="selectLikert('q10','5',this)"><input type="radio" name="entry.936808312" value="5">5</label>
+      </div>
+      <div class="likert-footer"><span>Strongly Disagree</span><span>Strongly Agree</span></div>
+    </div>
+
+    <!-- Q11 Likert -->
+    <div class="q-card" id="card-q11">
+      <div class="q-number">Question 11</div>
+      <div class="q-text">Excessive personalized ads feel intrusive to me. <span class="required">*</span></div>
+      <div class="likert-options" id="likert-q11">
+        <label class="likert-btn" onclick="selectLikert('q11','1',this)"><input type="radio" name="entry.531022889" value="1">1</label>
+        <label class="likert-btn" onclick="selectLikert('q11','2',this)"><input type="radio" name="entry.531022889" value="2">2</label>
+        <label class="likert-btn" onclick="selectLikert('q11','3',this)"><input type="radio" name="entry.531022889" value="3">3</label>
+        <label class="likert-btn" onclick="selectLikert('q11','4',this)"><input type="radio" name="entry.531022889" value="4">4</label>
+        <label class="likert-btn" onclick="selectLikert('q11','5',this)"><input type="radio" name="entry.531022889" value="5">5</label>
+      </div>
+      <div class="likert-footer"><span>Strongly Disagree</span><span>Strongly Agree</span></div>
+    </div>
+
+    <!-- SECTION D -->
+    <div class="section-label">
+      <div class="section-number">D</div>
+      <div class="section-title">Privacy & Trust</div>
+    </div>
+    <div class="section-divider"></div>
+
+    <!-- Q12 -->
+    <div class="q-card" id="card-q12">
+      <div class="q-number">Question 12</div>
+      <div class="q-text">How concerned are you about your personal data being used for targeted marketing? <span class="required">*</span></div>
+      <div class="options">
+        <label class="option"><input type="radio" name="entry.1805522137" value="Very Concerned"> Very concerned</label>
+        <label class="option"><input type="radio" name="entry.1805522137" value="Somewhat Concerned"> Somewhat concerned</label>
+        <label class="option"><input type="radio" name="entry.1805522137" value="Neutral"> Neutral</label>
+        <label class="option"><input type="radio" name="entry.1805522137" value="Not Concerned"> Not concerned</label>
+      </div>
+    </div>
+
+    <!-- Q13 Likert -->
+    <div class="q-card" id="card-q13">
+      <div class="q-number">Question 13</div>
+      <div class="q-text">My privacy concerns reduce my willingness to engage with personalized marketing. <span class="required">*</span></div>
+      <div class="likert-options" id="likert-q13">
+        <label class="likert-btn" onclick="selectLikert('q13','1',this)"><input type="radio" name="entry.1395655609" value="1">1</label>
+        <label class="likert-btn" onclick="selectLikert('q13','2',this)"><input type="radio" name="entry.1395655609" value="2">2</label>
+        <label class="likert-btn" onclick="selectLikert('q13','3',this)"><input type="radio" name="entry.1395655609" value="3">3</label>
+        <label class="likert-btn" onclick="selectLikert('q13','4',this)"><input type="radio" name="entry.1395655609" value="4">4</label>
+        <label class="likert-btn" onclick="selectLikert('q13','5',this)"><input type="radio" name="entry.1395655609" value="5">5</label>
+      </div>
+      <div class="likert-footer"><span>Strongly Disagree</span><span>Strongly Agree</span></div>
+    </div>
+
+    <!-- SECTION E -->
+    <div class="section-label">
+      <div class="section-number">E</div>
+      <div class="section-title">For Marketing Professionals</div>
+    </div>
+    <div class="section-divider"></div>
+    <p class="skip-notice">⚠️ Questions 14 and 15 are only for people currently working in marketing or sales. If you are a student or not in marketing, you may skip these.</p>
+
+    <!-- Q14 Likert -->
+    <div class="q-card" id="card-q14">
+      <div class="q-number">Question 14 · Marketing Professionals Only</div>
+      <div class="q-text">AI tools have improved customer engagement and retention in my organization.</div>
+      <div class="likert-options" id="likert-q14">
+        <label class="likert-btn" onclick="selectLikert('q14','1',this)"><input type="radio" name="entry.14536501" value="1">1</label>
+        <label class="likert-btn" onclick="selectLikert('q14','2',this)"><input type="radio" name="entry.14536501" value="2">2</label>
+        <label class="likert-btn" onclick="selectLikert('q14','3',this)"><input type="radio" name="entry.14536501" value="3">3</label>
+        <label class="likert-btn" onclick="selectLikert('q14','4',this)"><input type="radio" name="entry.14536501" value="4">4</label>
+        <label class="likert-btn" onclick="selectLikert('q14','5',this)"><input type="radio" name="entry.14536501" value="5">5</label>
+      </div>
+      <div class="likert-footer"><span>Strongly Disagree</span><span>Strongly Agree</span></div>
+    </div>
+
+    <!-- Q15 -->
+    <div class="q-card" id="card-q15">
+      <div class="q-number">Question 15 · Marketing Professionals Only</div>
+      <div class="q-text">What is the biggest challenge in implementing AI for marketing in your organization?</div>
+      <div class="options">
+        <label class="option"><input type="radio" name="entry.1023786532" value="High cost of implementation"> High cost of implementation</label>
+        <label class="option"><input type="radio" name="entry.1023786532" value="Lack of skilled talent"> Lack of skilled talent</label>
+        <label class="option"><input type="radio" name="entry.1023786532" value="Data privacy regulations"> Data privacy regulations</label>
+        <label class="option"><input type="radio" name="entry.1023786532" value="Poor data quality"> Poor data quality</label>
+        <label class="option"><input type="radio" name="entry.1023786532" value="Not applicable"> Not applicable</label>
+      </div>
+    </div>
+
+    <div class="submit-wrap">
+      <button type="submit" class="submit-btn" id="submitBtn">Submit Response</button>
+      <p class="submit-note">Your response is anonymous. Thank you for supporting academic research.</p>
+    </div>
+
+  </form>
+</div>
+
+<script>
+  // Likert button selection
+  function selectLikert(qId, value, el) {
+    const container = document.getElementById('likert-' + qId);
+    container.querySelectorAll('.likert-btn').forEach(btn => btn.classList.remove('selected'));
+    el.classList.add('selected');
+    const card = document.getElementById('card-' + qId);
+    if(card) { card.classList.add('active'); card.classList.remove('error'); }
+    updateProgress();
+  }
+
+  // Radio/checkbox highlight
+  document.querySelectorAll('.option input').forEach(input => {
+    input.addEventListener('change', function() {
+      if(this.type === 'radio') {
+        document.querySelectorAll(`[name="${this.name}"]`).forEach(r => {
+          r.closest('.option').classList.remove('selected');
+        });
+      }
+      if(this.checked) this.closest('.option').classList.add('selected');
+      else this.closest('.option').classList.remove('selected');
+      const card = this.closest('.q-card');
+      if(card) { card.classList.add('active'); card.classList.remove('error'); }
+      updateProgress();
+    });
+  });
+
+  // Progress bar
+  const requiredFields = ['entry.805243968','entry.2072922670','entry.2070589925',
+    'entry.1917994696','entry.910675579','entry.1781753645','entry.1583423131',
+    'entry.1969240336','entry.936808312','entry.531022889','entry.1805522137','entry.1395655609'];
+
+  function updateProgress() {
+    let answered = 0;
+    requiredFields.forEach(name => {
+      const checked = document.querySelector(`[name="${name}"]:checked`);
+      if(checked) answered++;
+    });
+    const pct = Math.round((answered / requiredFields.length) * 100);
+    document.getElementById('progressBar').style.width = pct + '%';
+  }
+
+  // Form submit
+  document.getElementById('surveyForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const required = [
+      {name:'entry.805243968', id:'card-q1'},
+      {name:'entry.2072922670', id:'card-q2'},
+      {name:'entry.2070589925', id:'card-q3'},
+      {name:'entry.1917994696', id:'card-q4'},
+      {name:'entry.910675579',  id:'card-q6'},
+      {name:'entry.1781753645', id:'card-q7'},
+      {name:'entry.1583423131', id:'card-q8'},
+      {name:'entry.1969240336', id:'card-q9'},
+      {name:'entry.936808312',  id:'card-q10'},
+      {name:'entry.531022889',  id:'card-q11'},
+      {name:'entry.1805522137', id:'card-q12'},
+      {name:'entry.1395655609', id:'card-q13'},
+    ];
+
+    let firstError = null;
+    let allOk = true;
+
+    required.forEach(field => {
+      const checked = document.querySelector('[name="' + field.name + '"]:checked');
+      const card = document.getElementById(field.id);
+      if(!checked) {
+        allOk = false;
+        if(card) { card.classList.add('error'); card.classList.remove('active'); }
+        if(!firstError) firstError = card;
+      }
+    });
+
+    if(!allOk) {
+      if(firstError) firstError.scrollIntoView({behavior:'smooth', block:'center'});
+      return;
+    }
+
+    // Build form data
+    const formData = new FormData();
+
+    const allFields = [
+      'entry.805243968','entry.2072922670','entry.2070589925',
+      'entry.1917994696','entry.910675579','entry.1781753645',
+      'entry.1583423131','entry.1969240336','entry.936808312',
+      'entry.531022889','entry.1805522137','entry.1395655609',
+      'entry.14536501','entry.1023786532'
+    ];
+
+    allFields.forEach(name => {
+      const checked = document.querySelector('[name="' + name + '"]:checked');
+      if(checked) formData.append(name, checked.value);
+    });
+
+    // Handle checkboxes Q5
+    const checkboxes = document.querySelectorAll('[name="entry.633160335"]:checked');
+    checkboxes.forEach(cb => formData.append('entry.633160335', cb.value));
+
+    // Show submitting state
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+
+    // Submit using fetch with no-cors
+    fetch('https://docs.google.com/forms/d/e/1FAIpQLSepWl0cZfHOXkx9F_hZ7gv_YSXQ1kM2rgw0y01AYwhtoZgRew/formResponse', {
+      method: 'POST',
+      mode: 'no-cors',
+      body: formData
+    }).then(() => {
+      document.getElementById('formWrap').style.display = 'none';
+      document.getElementById('successScreen').classList.add('show');
+      document.getElementById('progressBar').style.width = '100%';
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    }).catch(() => {
+      document.getElementById('formWrap').style.display = 'none';
+      document.getElementById('successScreen').classList.add('show');
+      document.getElementById('progressBar').style.width = '100%';
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    });
+  });
+</script>
+</body>
+</html>
