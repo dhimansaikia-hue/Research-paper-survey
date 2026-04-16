@@ -1,0 +1,54 @@
+:root {
+  font-family: Inter, system-ui, sans-serif;
+  color: #2e2e5e;
+  background: #faf8f5;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: #faf8f5; }
+.app { max-width: 480px; margin: 0 auto; min-height: 100vh; background: #faf8f5; padding-bottom: 72px; position: relative; }
+.header { height: 84px; background: #fff; border-bottom: 1px solid #eeeaf4; display: flex; justify-content: center; align-items: center; position: sticky; top: 0; z-index: 30; }
+.logo-card { background: #fff; padding: 6px 14px 2px; border-radius: 10px; text-align: center; }
+.logo { height: 52px; }
+.tracker-label { font-size: 11px; letter-spacing: 2.5px; color: #9a94c8; }
+.gear { position: absolute; right: 12px; top: 20px; border: none; background: transparent; color: #5b5b9e; font-size: 22px; }
+.tab-content { padding: 14px; }
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); border-top: 0.5px solid #eeeaf4; background: #fff; }
+.bottom-nav button { border: none; background: #fff; padding: 12px 4px; color: #b0a8a0; }
+.bottom-nav .active { color: #5b5b9e; font-weight: 600; }
+.parcel-card { background: #fff; border: 1px solid #eeeaf4; border-radius: 12px; box-shadow: 0 2px 8px rgba(91,91,158,0.08); padding: 16px; position: relative; margin-bottom: 12px; }
+.parcel-card h3 { margin: 0 0 10px; font-size: 17px; color: #2e2e5e; }
+.parcel-card p { margin: 5px 0; font-size: 13px; color: #7a6f6a; }
+.status { position: absolute; right: 12px; top: 12px; font-size: 12px; border-radius: 999px; padding: 4px 9px; }
+.fab { position: fixed; right: calc(50% - 220px); bottom: 86px; width: 56px; height: 56px; border-radius: 50%; border: none; color: white; font-size: 30px; background: #e8672a; box-shadow: 0 4px 12px rgba(232,103,42,0.4); }
+.custom-pin { width: 30px; height: 30px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: #5b5b9e; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; font-weight: 700; }
+.custom-pin::after { content: attr(data-count); transform: rotate(45deg); }
+.marker-wrap div { transform: rotate(-45deg); }
+.list-heading { color: #5b5b9e; font-size: 12px; letter-spacing: 1px; }
+.card-list { margin-top: 10px; }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.42); z-index: 60; display: flex; justify-content: center; }
+.modal { background: #fff; width: min(480px,100%); height: 100%; overflow: auto; padding: 14px; }
+.modal-head { display: flex; align-items: center; justify-content: space-between; }
+input, select, textarea, button { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #d8d1e8; margin-bottom: 10px; font: inherit; }
+.section-title { font-size: 11px; letter-spacing: 1.5px; color: #5b5b9e; text-transform: uppercase; }
+.primary { background: #e8672a; border: none; color: #fff; font-weight: 700; }
+.delete-outline, .outline { background: #fff; color: #e8672a; border: 1px solid #e8672a; }
+.chips { display: flex; overflow: auto; gap: 8px; margin-bottom: 10px; }
+.chip { width: auto; white-space: nowrap; border-radius: 999px; padding: 8px 12px; }
+.chip.active { background: #5b5b9e; border-color: #5b5b9e; color: #fff; }
+.login-screen { min-height: 100vh; display: grid; place-items: center; background: #fff; padding: 20px; }
+.login-logo { width: 220px; margin-bottom: 16px; }
+.form-card { width: 100%; max-width: 380px; }
+.error { color: #b71c1c; }
+.warning { color: #e8672a; }
+.upload-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.thumbs { display: flex; gap: 8px; overflow: auto; margin-bottom: 10px; }
+.thumb { border: 1px solid #eeeaf4; border-radius: 10px; padding: 8px; min-width: 120px; font-size: 12px; }
+.doc-row { display: flex; gap: 8px; margin-bottom: 10px; }
+.avail { border-radius: 999px; padding: 5px 10px; font-size: 12px; }
+.avail.yes { background: #e8f4ec; color: #1a6b3a; }
+.avail.no { background: #ececec; color: #7a6f6a; }
+.location-row { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 6px; align-items: center; margin-bottom: 8px; }
+.date-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.version { text-align: center; color: #7a6f6a; margin: 18px 0; font-size: 12px; }
+.toast { position: fixed; top: 90px; left: 50%; transform: translateX(-50%); background: #2e2e5e; color: #fff; padding: 8px 12px; border-radius: 999px; z-index: 100; }
+.profile { text-align: center; }
